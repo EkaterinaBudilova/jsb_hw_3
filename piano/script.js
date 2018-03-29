@@ -7,30 +7,41 @@ const higher = ['sounds/higher/first.mp3', 'sounds/higher/second.mp3', 'sounds/h
 const p = document.getElementsByTagName('ul');
 const piano = p[0];
 
-document.addEventListener('keydown', func) 
-
 function func(event) {
-  console.log(event.code);
-  if ((event.code === 'AltLeft') || (event.code === 'AltRight')) {
+  if (event.altKey) {
     piano.classList.remove('middle');
     piano.classList.add('higher');
-  } else if ((event.code === 'ShiftLeft') || (event.code === 'ShifRight')) {
+  } else if (event.shiftKey) {
     piano.classList.remove('middle');
     piano.classList.add('lower');
   }
+//  console.log(piano.classList);
 }
 
-for (let i = 0; i < sounds.length; i++) {
-  if (piano.classList.contains('middle')) {
-    sounds[i].src = middle[i];
-  } else if (piano.classList.contains('lower')) {
-    sounds[i].src = lower[i];
-  } else if (piano.classList.contains('higher')) {
-    sounds[i].src = higher[i];
+function reset(event) {
+  if (event.code == 'ShiftLeft') {
+    piano.classList.remove('lower');
+    piano.classList.add('middle');
+  } else if (event.code == 'AltLeft') {
+    piano.classList.remove('higher');
+    piano.classList.add('middle');
   }
+//  console.log(piano.classList);
 }
+
+document.addEventListener('keydown', func);
+document.addEventListener('keyup', reset);
 
 function play() {
+  for (let i = 0; i < sounds.length; i++) {
+    if (piano.classList.contains('middle')) {
+      sounds[i].src = middle[i];
+    } else if (piano.classList.contains('lower')) {
+      sounds[i].src = lower[i];
+    } else if (piano.classList.contains('higher')) {
+      sounds[i].src = higher[i];
+    }
+  }
   let players = this.getElementsByTagName('audio');
   let player = players[0];
   player.play();
